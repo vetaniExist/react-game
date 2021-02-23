@@ -2,12 +2,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-class Hello extends React.Component {
-    render() {
-        return <h1>Hello, world</h1>;
-    }
-}
+import "../css/tic-tac-toe.css";
+
+import TicTacToeGame from "./TicTacToeGame.jsx";
+
 ReactDOM.render(
-    <Hello />,
+    <TicTacToeGame 
+    fieldSize = {3}
+    isOnlineGame ={false}/>,
     document.getElementById("app")
 )

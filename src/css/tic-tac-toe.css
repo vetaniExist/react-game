@@ -1,0 +1,14 @@
+.ttt-div {
+    width: 5vw;
+    height: 5vh;
+    background-color: red;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ttt-gameField {
+    display: grid;
+}
