@@ -1,5 +1,7 @@
 import React from "react";
 
+import { BASIC_FIELD_SIZE, MAX_FIELD_SIZE } from "../../../js/constants";
+
 export default function FieldSize(props) {
 
   return (
@@ -9,8 +11,8 @@ export default function FieldSize(props) {
         onChange={event => {
           props.fieldSizeHandler(event.target.value)
         }}
-        min={3}
-        max={10}
+        min={BASIC_FIELD_SIZE}
+        max={MAX_FIELD_SIZE}
         step={1}
         defaultValue={3}
       />

@@ -7,8 +7,11 @@ import Setting from "./settings/ticTacToe/Setting.jsx";
 
 import checkWinCondition, { substract2dField } from "../js/ticTacToeWinCondition";
 
+import { BASIC_FIELD_SIZE } from "../js/constants";
+
 function TicTacToeGame(props) {
-  const [fieldSize, setFieldSize] = React.useState(3);
+  const [fieldSize, setFieldSize] = React.useState(BASIC_FIELD_SIZE);
+  const [winLineLength, setWinLineLength] = React.useState(BASIC_FIELD_SIZE);
   const [gameField, updateGameField] = React.useState(new Array(fieldSize ** 2).fill(""));
   const [curUser, setCurUser] = React.useState(0);
   const [gameWinner, setGameWinner] = React.useState("");
@@ -53,10 +56,10 @@ function TicTacToeGame(props) {
     throw new Error("cellClickHandleOnline not implement");
   };
 
-  function handleFieldSize(newFieldSize) {
+  function handleFieldSize(newFieldSize, newWinLienLength = winLineLength) {
     newFieldSize = parseInt(newFieldSize);
     const newGameField = new Array(newFieldSize ** 2).fill("");
-    const newSetOfFields = substract2dField(newGameField, newFieldSize);
+    const newSetOfFields = substract2dField(newGameField, newFieldSize, newWinLienLength);
 
     setFieldSize(parseInt(newFieldSize, 10));
     updateGameField(newGameField);
@@ -66,9 +69,18 @@ function TicTacToeGame(props) {
     setLastCellClicked(-1);
   }
 
+  function handleWinLineLength(newWinLineLength) {
+    newWinLineLength = parseInt(newWinLineLength);
+    if (newWinLineLength > fieldSize) {
+      return;
+    }
+    setWinLineLength(newWinLineLength);
+    handleFieldSize(fieldSize, newWinLineLength);
+  }
+
   React.useEffect(() => {
     checkWinCondition(gameField, setGameWinner, setOfFields, lastCellClicked);
-    
+
   });
 
   return (
@@ -81,7 +93,9 @@ function TicTacToeGame(props) {
         clickHandler={restartGame} />
       <Setting
         fieldSizeHandler={handleFieldSize}
-        fieldSize={fieldSize} />
+        fieldSize={fieldSize}
+        winLineHandler={handleWinLineLength}
+        winLineLength={winLineLength} />
     </div>
   );
 }

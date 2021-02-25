@@ -72,16 +72,21 @@ function checkVerticals(field2D, setGameWinner) {
 }
 
 function checkDiagonals(field2D, setGameWinner) {
-  if (field2D[0][0] !== "" && field2D[0][0] === field2D[1][1] && field2D[0][0] === field2D[2][2]) {
+  const leftToRightDiagonal = field2D[0][0] !== "" && field2D.every((el, idx) => el[idx] === field2D[0][0]);
+  if (leftToRightDiagonal) {
     logWinner(field2D[0][0]);
     setGameWinner(field2D[0][0]);
     return field2D[0][0];
   }
 
-  if (field2D[0][2] !== "" && field2D[0][2] === field2D[1][1] && field2D[0][2] === field2D[2][0]) {
-    logWinner(field2D[0][2]);
-    setGameWinner(field2D[0][2]);
-    return field2D[0][2];
+  const lastCellIndex = field2D.length - 1;
+  const rightToLeftDiagonal = field2D[0][lastCellIndex] !== ""
+    && field2D.every((el, idx) => el[lastCellIndex - idx] === field2D[0][lastCellIndex]);
+
+  if (rightToLeftDiagonal) {
+    logWinner(field2D[0][lastCellIndex]);
+    setGameWinner(field2D[0][lastCellIndex]);
+    return field2D[0][lastCellIndex];
   }
 
   return false;
