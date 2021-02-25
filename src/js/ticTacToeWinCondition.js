@@ -49,33 +49,42 @@ export function substract2dField(gameField, fieldSize, subFieldsSize = 3) {
   return subFields;
 }
 
-function checkHorizontals(field2D, setGameWinner) {
+function checkHorizontals(field2D, setGameWinner, idField, setWinLine) {
   for (let i = 0; i < field2D.length; i += 1) {
     if (field2D[i][0] !== "" && field2D[i].every((el) => el === field2D[i][0])) {
       logWinner(field2D[i][0]);
       setGameWinner(field2D[i][0]);
+      setWinLine(idField[i]);
       return field2D[i][0];
     }
   }
   return false;
 }
 
-function checkVerticals(field2D, setGameWinner) {
+function checkVerticals(field2D, setGameWinner, idField, setWinLine) {
   for (let i = 0; i < field2D[0].length; i += 1) {
     if (field2D[0][i] !== "" && field2D.every((el) => el[i] === field2D[0][i])) {
       logWinner(field2D[0][i]);
       setGameWinner(field2D[0][i]);
+
+      const winLine = idField.reduce((acc, row) => [...acc, row[i]], []);
+      setWinLine(winLine);
+
       return field2D[0][i];
     }
   }
   return false;
 }
 
-function checkDiagonals(field2D, setGameWinner) {
+function checkDiagonals(field2D, setGameWinner, idField, setWinLine) {
   const leftToRightDiagonal = field2D[0][0] !== "" && field2D.every((el, idx) => el[idx] === field2D[0][0]);
   if (leftToRightDiagonal) {
     logWinner(field2D[0][0]);
     setGameWinner(field2D[0][0]);
+
+    const winLine = idField.reduce((acc, row, idx) => [...acc, row[idx]], []);
+    setWinLine(winLine);
+
     return field2D[0][0];
   }
 
@@ -86,6 +95,10 @@ function checkDiagonals(field2D, setGameWinner) {
   if (rightToLeftDiagonal) {
     logWinner(field2D[0][lastCellIndex]);
     setGameWinner(field2D[0][lastCellIndex]);
+
+    const winLine = idField.reduce((acc, row, idx) => [...acc, row[lastCellIndex - idx]], []);
+    setWinLine(winLine);
+    
     return field2D[0][lastCellIndex];
   }
 
@@ -103,16 +116,16 @@ function findArrayOfFieldsThatIntoClickArea(setOfFields, clickID) {
   return filteredFields;
 }
 
-export default function checkWinCondition(gameField, setGameWinner, setOfFields, clickID) {
+export default function checkWinCondition(gameField, setGameWinner, setOfFields, clickID, setWinLine) {
   if (clickID === -1) {
     return;
   }
   const arrayOfFields = findArrayOfFieldsThatIntoClickArea(setOfFields, clickID);
   for (let i = 0; i < arrayOfFields.length; i += 1) {
     const field2D = configurateField2DUsingArrayOfID(arrayOfFields[i], gameField);
-    if (!checkHorizontals(field2D, setGameWinner)) {
-      if (!checkVerticals(field2D, setGameWinner)) {
-        if (checkDiagonals(field2D, setGameWinner)) {
+    if (!checkHorizontals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
+      if (!checkVerticals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
+        if (checkDiagonals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
           return;
         }
       } else {

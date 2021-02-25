@@ -17,12 +17,14 @@ function TicTacToeGame(props) {
   const [gameWinner, setGameWinner] = React.useState("");
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize));
   const [lastCellClicked, setLastCellClicked] = React.useState(-1);
+  const [winLine, setWinLine] = React.useState(null);
 
   function restartGame() {
     updateGameField(new Array(fieldSize ** 2).fill(""));
     setCurUser(0);
     setGameWinner("");
     setLastCellClicked(-1);
+    setWinLine(null);
   }
 
   function changeCurUser() {
@@ -44,12 +46,12 @@ function TicTacToeGame(props) {
     } else {
       mark = "X";
     }
-    updateGameField(olfField => {
-      olfField[id] = mark;
-      return [...olfField];
-    });
-    changeCurUser();
+    const newGameField = [...gameField];
+    newGameField[id] = mark;
 
+    updateGameField(newGameField);
+    changeCurUser();
+    checkWinCondition(newGameField, setGameWinner, setOfFields, id, setWinLine);
   };
 
   function cellClickHandleOnline() {
@@ -67,6 +69,7 @@ function TicTacToeGame(props) {
     setGameWinner("");
     createSetOfField(newSetOfFields);
     setLastCellClicked(-1);
+    setWinLine(null);
   }
 
   function handleWinLineLength(newWinLineLength) {
@@ -78,16 +81,12 @@ function TicTacToeGame(props) {
     handleFieldSize(fieldSize, newWinLineLength);
   }
 
-  React.useEffect(() => {
-    checkWinCondition(gameField, setGameWinner, setOfFields, lastCellClicked);
-
-  });
-
   return (
     <div>
       <TicTacToeGameField
         cellClickHandle={props.isOnlineGame ? cellClickHandleOnline : cellClickHandle}
         gameField={gameField}
+        winLine={winLine}
       />
       <RestartBtn
         clickHandler={restartGame} />

@@ -15,8 +15,9 @@ export default function TicTacToeGameField(props) {
       {
         props.gameField.map((el, index) => <Cell key={index}
           clickHandler={props.cellClickHandle}
-          ID={index} 
-          mark = {props.gameField[index]}/>)
+          ID={index}
+          mark={props.gameField[index]}
+          itWinCell={props.winLine && props.winLine.indexOf(index) !== -1}/>)
       }
     </div>
   );
