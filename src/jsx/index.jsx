@@ -8,7 +8,6 @@ import TicTacToeGame from "./TicTacToeGame.jsx";
 
 ReactDOM.render(
     <TicTacToeGame 
-    fieldSize = {5}
     isOnlineGame ={false}/>,
     document.getElementById("app")
 )
