@@ -98,7 +98,7 @@ function checkDiagonals(field2D, setGameWinner, idField, setWinLine) {
 
     const winLine = idField.reduce((acc, row, idx) => [...acc, row[lastCellIndex - idx]], []);
     setWinLine(winLine);
-    
+
     return field2D[0][lastCellIndex];
   }
 

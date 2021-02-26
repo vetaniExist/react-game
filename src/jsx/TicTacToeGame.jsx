@@ -16,14 +16,12 @@ function TicTacToeGame(props) {
   const [curUser, setCurUser] = React.useState(0);
   const [gameWinner, setGameWinner] = React.useState("");
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize));
-  const [lastCellClicked, setLastCellClicked] = React.useState(-1);
   const [winLine, setWinLine] = React.useState(null);
 
   function restartGame() {
     updateGameField(new Array(fieldSize ** 2).fill(""));
     setCurUser(0);
     setGameWinner("");
-    setLastCellClicked(-1);
     setWinLine(null);
   }
 
@@ -39,7 +37,6 @@ function TicTacToeGame(props) {
     if (gameWinner !== "" || gameField[id] !== "") {
       return;
     }
-    setLastCellClicked(id);
     let mark;
     if (curUser === 0) {
       mark = "O";
@@ -68,7 +65,6 @@ function TicTacToeGame(props) {
     setCurUser(0);
     setGameWinner("");
     createSetOfField(newSetOfFields);
-    setLastCellClicked(-1);
     setWinLine(null);
   }
 
