@@ -1,2 +1,7 @@
 export const BASIC_FIELD_SIZE = 3;
 export const MAX_FIELD_SIZE = 10;
+export const ERROR_CLICK_ANIMATION_TIME = 300;
+
+export const CELL_CLICK_RESPONSE_OK = 1;
+export const CELL_CLICK_RESPONSE_GAME_END = 2;
+export const CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY = 3;

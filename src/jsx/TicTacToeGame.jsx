@@ -7,7 +7,12 @@ import Setting from "./settings/ticTacToe/Setting.jsx";
 
 import checkWinCondition, { substract2dField } from "../js/ticTacToeWinCondition";
 
-import { BASIC_FIELD_SIZE } from "../js/constants";
+import {
+  BASIC_FIELD_SIZE,
+  CELL_CLICK_RESPONSE_GAME_END,
+  CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
+  CELL_CLICK_RESPONSE_OK
+} from "../js/constants";
 
 function TicTacToeGame(props) {
   const [fieldSize, setFieldSize] = React.useState(BASIC_FIELD_SIZE);
@@ -34,9 +39,13 @@ function TicTacToeGame(props) {
   }
 
   function cellClickHandle(id) {
-    if (gameWinner !== "" || gameField[id] !== "") {
-      return;
+    if (gameWinner !== "") {
+      return CELL_CLICK_RESPONSE_GAME_END;
     }
+    if (gameField[id] !== "") {
+      return CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY;
+    }
+
     let mark;
     if (curUser === 0) {
       mark = "O";
@@ -49,6 +58,7 @@ function TicTacToeGame(props) {
     updateGameField(newGameField);
     changeCurUser();
     checkWinCondition(newGameField, setGameWinner, setOfFields, id, setWinLine);
+    return CELL_CLICK_RESPONSE_OK;
   };
 
   function cellClickHandleOnline() {
