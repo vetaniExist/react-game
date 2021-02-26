@@ -5,7 +5,7 @@ import RestartBtn from "./RestartBtn.jsx";
 
 import Setting from "./settings/ticTacToe/Setting.jsx";
 
-import checkWinCondition, { substract2dField } from "../js/ticTacToeWinCondition";
+import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
 import {
   BASIC_FIELD_SIZE,
@@ -60,6 +60,14 @@ function TicTacToeGame(props) {
     checkWinCondition(newGameField, setGameWinner, setOfFields, id, setWinLine);
     return CELL_CLICK_RESPONSE_OK;
   };
+
+  React.useEffect(() => {
+    if (!gameWinner) {
+      if (isStalemate(gameField)) {
+        console.log("stalemate in tic tac toe");
+      }
+    }
+  });
 
   function cellClickHandleOnline() {
     throw new Error("cellClickHandleOnline not implement");
