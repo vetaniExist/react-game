@@ -10,6 +10,10 @@ function configurateGameFieldStyle(fieldSize) {
 }
 
 export default function TicTacToeGameField(props) {
+  function checkCellWinProperty(index) {
+    return props.winLine && props.winLine.indexOf(index) !== -1
+  }
+
   return (
     <div className="ttt-gameField" style={configurateGameFieldStyle(props.gameField.length ** (1 / 2))}>
       {
@@ -17,7 +21,7 @@ export default function TicTacToeGameField(props) {
           clickHandler={props.cellClickHandle}
           ID={index}
           mark={props.gameField[index]}
-          itWinCell={props.winLine && props.winLine.indexOf(index) !== -1}/>)
+          itWinCell={checkCellWinProperty(index)} />)
       }
     </div>
   );

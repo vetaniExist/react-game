@@ -15,26 +15,98 @@ import {
 } from "../js/constants";
 
 function TicTacToeGame(props) {
-  const [fieldSize, setFieldSize] = React.useState(BASIC_FIELD_SIZE);
-  const [winLineLength, setWinLineLength] = React.useState(BASIC_FIELD_SIZE);
-  const [gameField, updateGameField] = React.useState(new Array(fieldSize ** 2).fill(""));
-  const [curUser, setCurUser] = React.useState(0);
-  const [gameWinner, setGameWinner] = React.useState("");
-  const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize));
-  const [winLine, setWinLine] = React.useState(null);
+  function loadFieldSizeInitialState() {
+    const localFieldSize = parseInt(window.localStorage.getItem("fieldSize"), 10);
+    return localFieldSize || BASIC_FIELD_SIZE;
+  }
+
+  function loadWinLineLengthInitialState() {
+    const localWinLineLength = parseInt(window.localStorage.getItem("winLineLength"), 10);
+    if (localWinLineLength && localWinLineLength > fieldSize) {
+      return fieldSize;
+    }
+    return localWinLineLength || BASIC_FIELD_SIZE;
+  }
+
+  function loadGameFieldInitialState() {
+    const localGameField = window.localStorage.getItem("gameField");
+    return (localGameField && localGameField.split(",")) || new Array(fieldSize ** 2).fill("");
+  }
+
+  function loadCurUserInitialState() {
+    return parseInt(window.localStorage.getItem("curUser"), 10) || 0;
+  }
+
+  function loadGameWinnerInnitialState() {
+    return window.localStorage.getItem("gameWinner") || "";
+  }
+
+  function loadSetOfFieldsInitialState() {
+    return substract2dField(gameField, fieldSize, winLineLength);
+  }
+
+  function loadWinLineInitialState() {
+    const localWinLine = window.localStorage.getItem("winLine");
+    return (localWinLine && localWinLine.split(",").map((el) => parseInt(el, 10))) || null;
+  }
+
+  const [fieldSize, setFieldSize] = React.useState(loadFieldSizeInitialState());
+  const [winLineLength, setWinLineLength] = React.useState(loadWinLineLengthInitialState());
+  const [gameField, setGameField] = React.useState(loadGameFieldInitialState());
+  const [curUser, setCurUser] = React.useState(loadCurUserInitialState);
+  const [gameWinner, setGameWinner] = React.useState(loadGameWinnerInnitialState());
+  const [setOfFields, createSetOfField] = React.useState(loadSetOfFieldsInitialState());
+  const [winLine, setWinLine] = React.useState(loadWinLineInitialState());
+
+  function updateState(newValue, setStateCallback, localStorageVarName) {
+    setStateCallback(newValue);
+    if (localStorageVarName) {
+      window.localStorage.setItem(localStorageVarName, newValue);
+    }
+  }
+
+  function updateFieldSize(newValue) {
+    updateState(newValue, setFieldSize, "fieldSize");
+  }
+
+  function updateWinLineLength(newWinLineLength) {
+    updateState(newWinLineLength, setWinLineLength, "winLineLength");
+  }
+
+  function updateGameField(newGameField) {
+    updateState(newGameField, setGameField, "gameField");
+  }
+
+  function updateCurUser(newCurUserVal) {
+    updateState(newCurUserVal, setCurUser, "curUser");
+  }
+
+  function updateGameWinner(newValue) {
+    updateState(newValue, setGameWinner, "gameWinner");
+  }
+
+  function updateWinLine(newValue) {
+    if (newValue === null) {
+      window.localStorage.removeItem("winLine");
+      setWinLine(null);
+    } else {
+      updateState(newValue, setWinLine, "winLine");
+    }
+  }
 
   function restartGame() {
-    updateGameField(new Array(fieldSize ** 2).fill(""));
-    setCurUser(0);
-    setGameWinner("");
-    setWinLine(null);
+    const newGameField = new Array(fieldSize ** 2).fill("");
+    updateGameField(newGameField)
+    updateCurUser(0);
+    updateGameWinner("");
+    updateWinLine(null);
   }
 
   function changeCurUser() {
     if (curUser === 0) {
-      setCurUser(1);
+      updateCurUser(1);
     } else {
-      setCurUser(0);
+      updateCurUser(0);
     }
   }
 
@@ -57,7 +129,7 @@ function TicTacToeGame(props) {
 
     updateGameField(newGameField);
     changeCurUser();
-    checkWinCondition(newGameField, setGameWinner, setOfFields, id, setWinLine);
+    checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     return CELL_CLICK_RESPONSE_OK;
   };
 
@@ -73,17 +145,22 @@ function TicTacToeGame(props) {
     throw new Error("cellClickHandleOnline not implement");
   };
 
-  function handleFieldSize(newFieldSize, newWinLienLength = winLineLength) {
-    newFieldSize = parseInt(newFieldSize);
+  function handleFieldSize(newFieldSize, newWinLineLength = winLineLength) {
+    newFieldSize = parseInt(newFieldSize, 10);
+    if (newFieldSize < newWinLineLength) {
+      newWinLineLength = newFieldSize;
+    }
     const newGameField = new Array(newFieldSize ** 2).fill("");
-    const newSetOfFields = substract2dField(newGameField, newFieldSize, newWinLienLength);
+    const newSetOfFields = substract2dField(newGameField, newFieldSize, newWinLineLength);
 
-    setFieldSize(parseInt(newFieldSize, 10));
+    updateFieldSize(newFieldSize);
+    updateWinLineLength(newWinLineLength);
+
     updateGameField(newGameField);
-    setCurUser(0);
-    setGameWinner("");
+    updateCurUser(0)
+    updateGameWinner("");
     createSetOfField(newSetOfFields);
-    setWinLine(null);
+    updateWinLine(null);
   }
 
   function handleWinLineLength(newWinLineLength) {
@@ -91,7 +168,7 @@ function TicTacToeGame(props) {
     if (newWinLineLength > fieldSize) {
       return;
     }
-    setWinLineLength(newWinLineLength);
+    updateWinLineLength(newWinLineLength);
     handleFieldSize(fieldSize, newWinLineLength);
   }
 

@@ -32,6 +32,7 @@ export default function Cell(props) {
       style.fontSize = "24px";
     }
     if (props.itWinCell) {
+      console.log(props);
       style.backgroundColor = "green";
       style.transition = "0.5s";
     }

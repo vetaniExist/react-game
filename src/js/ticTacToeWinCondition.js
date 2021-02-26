@@ -20,6 +20,7 @@ function configurateField2D(fieldSize, gameField) {
 
 export function substract2dField(gameField, fieldSize, subFieldsSize = 3) {
   const field2D = configurateField2D(fieldSize, gameField);
+
   if (fieldSize === 3) {
     const res = [];
     res.push(field2D.map((row) => row.map((cell) => cell.idx)));

@@ -14,7 +14,7 @@ export default function FieldSize(props) {
         min={BASIC_FIELD_SIZE}
         max={MAX_FIELD_SIZE}
         step={1}
-        defaultValue={3}
+        value={props.fieldSizeValue}
       />
     </label>
   );
