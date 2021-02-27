@@ -7,56 +7,22 @@ import Setting from "./settings/ticTacToe/Setting.jsx";
 
 import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
+import { default as initialStateLoader } from  "../js/ticTacToeInitialStateLoader";
+
 import {
-  BASIC_FIELD_SIZE,
   CELL_CLICK_RESPONSE_GAME_END,
   CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
   CELL_CLICK_RESPONSE_OK
 } from "../js/constants";
 
 function TicTacToeGame(props) {
-  function loadFieldSizeInitialState() {
-    const localFieldSize = parseInt(window.localStorage.getItem("fieldSize"), 10);
-    return localFieldSize || BASIC_FIELD_SIZE;
-  }
-
-  function loadWinLineLengthInitialState() {
-    const localWinLineLength = parseInt(window.localStorage.getItem("winLineLength"), 10);
-    if (localWinLineLength && localWinLineLength > fieldSize) {
-      return fieldSize;
-    }
-    return localWinLineLength || BASIC_FIELD_SIZE;
-  }
-
-  function loadGameFieldInitialState() {
-    const localGameField = window.localStorage.getItem("gameField");
-    return (localGameField && localGameField.split(",")) || new Array(fieldSize ** 2).fill("");
-  }
-
-  function loadCurUserInitialState() {
-    return parseInt(window.localStorage.getItem("curUser"), 10) || 0;
-  }
-
-  function loadGameWinnerInnitialState() {
-    return window.localStorage.getItem("gameWinner") || "";
-  }
-
-  function loadSetOfFieldsInitialState() {
-    return substract2dField(gameField, fieldSize, winLineLength);
-  }
-
-  function loadWinLineInitialState() {
-    const localWinLine = window.localStorage.getItem("winLine");
-    return (localWinLine && localWinLine.split(",").map((el) => parseInt(el, 10))) || null;
-  }
-
-  const [fieldSize, setFieldSize] = React.useState(loadFieldSizeInitialState());
-  const [winLineLength, setWinLineLength] = React.useState(loadWinLineLengthInitialState());
-  const [gameField, setGameField] = React.useState(loadGameFieldInitialState());
-  const [curUser, setCurUser] = React.useState(loadCurUserInitialState);
-  const [gameWinner, setGameWinner] = React.useState(loadGameWinnerInnitialState());
-  const [setOfFields, createSetOfField] = React.useState(loadSetOfFieldsInitialState());
-  const [winLine, setWinLine] = React.useState(loadWinLineInitialState());
+  const [fieldSize, setFieldSize] = React.useState(initialStateLoader.loadFieldSize());
+  const [winLineLength, setWinLineLength] = React.useState(initialStateLoader.loadWinLineLength(fieldSize));
+  const [gameField, setGameField] = React.useState(initialStateLoader.loadGameField());
+  const [curUser, setCurUser] = React.useState(initialStateLoader.loadCurUser());
+  const [gameWinner, setGameWinner] = React.useState(initialStateLoader.loadGameWinner());
+  const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
+  const [winLine, setWinLine] = React.useState(initialStateLoader.loadWinLine());
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
