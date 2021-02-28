@@ -6,6 +6,9 @@ function loadFieldSizeInitialState() {
 }
 
 function loadWinLineLengthInitialState(fieldSize) {
+  if (!fieldSize) {
+    throw new Error("ticTacToeInitialStateLoader.loadWinLineLength : can't get gameField");
+  }
   const localWinLineLength = parseInt(window.localStorage.getItem("winLineLength"), 10);
   if (localWinLineLength && localWinLineLength > fieldSize) {
     return fieldSize;
@@ -13,7 +16,10 @@ function loadWinLineLengthInitialState(fieldSize) {
   return localWinLineLength || BASIC_FIELD_SIZE;
 }
 
-function loadGameFieldInitialState() {
+function loadGameFieldInitialState(fieldSize) {
+  if (!fieldSize) {
+    throw new Error("ticTacToeInitialStateLoader.loadGameField : can't get gameField");
+  }
   const localGameField = window.localStorage.getItem("gameField");
   return (localGameField && localGameField.split(",")) || new Array(fieldSize ** 2).fill("");
 }

@@ -18,7 +18,7 @@ import {
 function TicTacToeGame(props) {
   const [fieldSize, setFieldSize] = React.useState(initialStateLoader.loadFieldSize());
   const [winLineLength, setWinLineLength] = React.useState(initialStateLoader.loadWinLineLength(fieldSize));
-  const [gameField, setGameField] = React.useState(initialStateLoader.loadGameField());
+  const [gameField, setGameField] = React.useState(initialStateLoader.loadGameField(fieldSize));
   const [curUser, setCurUser] = React.useState(initialStateLoader.loadCurUser());
   const [gameWinner, setGameWinner] = React.useState(initialStateLoader.loadGameWinner());
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
