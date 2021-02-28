@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Cell from "./cell.jsx";
 
@@ -6,12 +7,12 @@ function configurateGameFieldStyle(fieldSize) {
   return {
     gridTemplateRows: `repeat(${fieldSize}, 5vh`,
     gridTemplateColumns: `repeat(${fieldSize}, 5vw`,
-  }
+  };
 }
 
-export default function TicTacToeGameField(props) {
+function TicTacToeGameField(props) {
   function checkCellWinProperty(index) {
-    return props.winLine && props.winLine.indexOf(index) !== -1
+    return (props.winLine && props.winLine.indexOf(index) !== -1) || false;
   }
 
   return (
@@ -26,3 +27,15 @@ export default function TicTacToeGameField(props) {
     </div>
   );
 }
+
+TicTacToeGameField.propTypes = {
+  winLine: PropTypes.array,
+  gameField: PropTypes.array.isRequired,
+  cellClickHandle: PropTypes.func.isRequired,
+};
+
+TicTacToeGameField.defaultProps = {
+  winLine: null,
+};
+
+export default TicTacToeGameField;

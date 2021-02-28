@@ -1,8 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function RestartBtn(props) {
+function RestartBtn(props) {
   return (
-    <button onClick = {event => props.clickHandler()}>
+    <button onClick={() => props.clickHandler()}>
       Restart
-    </button>)
+    </button>);
 }
+
+RestartBtn.propTypes = {
+  clickHandler: PropTypes.func.isRequired,
+};
+
+export default RestartBtn;

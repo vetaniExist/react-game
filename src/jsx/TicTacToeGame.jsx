@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import TicTacToeGameField from "./TicTacToeGameField.jsx";
 import RestartBtn from "./RestartBtn.jsx";
@@ -7,22 +8,22 @@ import Setting from "./settings/ticTacToe/Setting.jsx";
 
 import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
-import { default as initialStateLoader } from  "../js/ticTacToeInitialStateLoader";
+import ticTacToeInitialStateLoader from "../js/ticTacToeInitialStateLoader";
 
 import {
   CELL_CLICK_RESPONSE_GAME_END,
   CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
-  CELL_CLICK_RESPONSE_OK
+  CELL_CLICK_RESPONSE_OK,
 } from "../js/constants";
 
 function TicTacToeGame(props) {
-  const [fieldSize, setFieldSize] = React.useState(initialStateLoader.loadFieldSize());
-  const [winLineLength, setWinLineLength] = React.useState(initialStateLoader.loadWinLineLength(fieldSize));
-  const [gameField, setGameField] = React.useState(initialStateLoader.loadGameField(fieldSize));
-  const [curUser, setCurUser] = React.useState(initialStateLoader.loadCurUser());
-  const [gameWinner, setGameWinner] = React.useState(initialStateLoader.loadGameWinner());
+  const [fieldSize, setFieldSize] = React.useState(ticTacToeInitialStateLoader.loadFieldSize());
+  const [winLineLength, setWinLineLength] = React.useState(ticTacToeInitialStateLoader.loadWinLineLength(fieldSize));
+  const [gameField, setGameField] = React.useState(ticTacToeInitialStateLoader.loadGameField(fieldSize));
+  const [curUser, setCurUser] = React.useState(ticTacToeInitialStateLoader.loadCurUser());
+  const [gameWinner, setGameWinner] = React.useState(ticTacToeInitialStateLoader.loadGameWinner());
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
-  const [winLine, setWinLine] = React.useState(initialStateLoader.loadWinLine());
+  const [winLine, setWinLine] = React.useState(ticTacToeInitialStateLoader.loadWinLine());
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -62,7 +63,7 @@ function TicTacToeGame(props) {
 
   function restartGame() {
     const newGameField = new Array(fieldSize ** 2).fill("");
-    updateGameField(newGameField)
+    updateGameField(newGameField);
     updateCurUser(0);
     updateGameWinner("");
     updateWinLine(null);
@@ -97,7 +98,7 @@ function TicTacToeGame(props) {
     changeCurUser();
     checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     return CELL_CLICK_RESPONSE_OK;
-  };
+  }
 
   React.useEffect(() => {
     if (!gameWinner) {
@@ -109,10 +110,11 @@ function TicTacToeGame(props) {
 
   function cellClickHandleOnline() {
     throw new Error("cellClickHandleOnline not implement");
-  };
+  }
 
-  function handleFieldSize(newFieldSize, newWinLineLength = winLineLength) {
-    newFieldSize = parseInt(newFieldSize, 10);
+  function handleFieldSize(nFieldSize, nWinLineLength = winLineLength) {
+    const newFieldSize = parseInt(nFieldSize, 10);
+    let newWinLineLength = nWinLineLength;
     if (newFieldSize < newWinLineLength) {
       newWinLineLength = newFieldSize;
     }
@@ -123,14 +125,14 @@ function TicTacToeGame(props) {
     updateWinLineLength(newWinLineLength);
 
     updateGameField(newGameField);
-    updateCurUser(0)
+    updateCurUser(0);
     updateGameWinner("");
     createSetOfField(newSetOfFields);
     updateWinLine(null);
   }
 
-  function handleWinLineLength(newWinLineLength) {
-    newWinLineLength = parseInt(newWinLineLength);
+  function handleWinLineLength(nWinLineLength) {
+    const newWinLineLength = parseInt(nWinLineLength, 10);
     if (newWinLineLength > fieldSize) {
       return;
     }
@@ -156,4 +158,12 @@ function TicTacToeGame(props) {
   );
 }
 
-export default TicTacToeGame; 
+TicTacToeGame.propTypes = {
+  isOnlineGame: PropTypes.bool,
+};
+
+TicTacToeGameField.defaultProps = {
+  isOnlineGame: false,
+};
+
+export default TicTacToeGame;

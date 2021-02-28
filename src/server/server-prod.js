@@ -18,4 +18,4 @@ server.get("/*", (req, res) => {
   res.redirect("/");
 });
 
-server.listen(PORT, () => console.log(`Listening on ${PORT}`));
+server.listen(PORT, () => console.log(`Listening on ${PORT}`));// eslint-disable-line

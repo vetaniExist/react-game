@@ -1,8 +1,8 @@
 import path from "path";
 import express from "express";
 
-import webpack from "webpack";
-import webpackDevMiddleware from "webpack-dev-middleware";
+import webpack from "webpack";// eslint-disable-line
+import webpackDevMiddleware from "webpack-dev-middleware";// eslint-disable-line
 import config from "../../webpack.dev.config";
 
 const DIST_DIR = __dirname;
@@ -16,7 +16,7 @@ const server = express();
 
 server.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
-}))
+}));
 
 server.use(express.static(DIST_DIR));
 
@@ -28,4 +28,4 @@ server.get("/*", (req, res) => {
   res.redirect("/");
 });
 
-server.listen(PORT, () => console.log(`Listening on ${PORT}`));
+server.listen(PORT, () => console.log(`Listening on ${PORT}`));// eslint-disable-line

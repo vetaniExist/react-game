@@ -1,15 +1,14 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { BASIC_FIELD_SIZE } from "../../../js/constants";
 
-export default function WinLineLength(props) {
+function WinLineLength(props) {
   return (
     <label>
       win line size {props.winLineLength}
       <input type="range"
-        onChange={event => {
-          props.winLineHandler(event.target.value)
-        }}
+        onChange={(event) => props.winLineHandler(event.target.value)}
         min={BASIC_FIELD_SIZE}
         max={props.fieldSizeValue}
         step={1}
@@ -19,3 +18,11 @@ export default function WinLineLength(props) {
     </label>
   );
 }
+
+WinLineLength.propTypes = {
+  winLineLength: PropTypes.number.isRequired,
+  winLineHandler: PropTypes.func.isRequired,
+  fieldSizeValue: PropTypes.number.isRequired,
+};
+
+export default WinLineLength;
