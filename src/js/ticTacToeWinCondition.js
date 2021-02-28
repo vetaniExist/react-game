@@ -127,13 +127,14 @@ export default function checkWinCondition(gameField, setGameWinner, setOfFields,
     if (!checkHorizontals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
       if (!checkVerticals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
         if (checkDiagonals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
-          return;
+          return true;
         }
+        return false;
       } else {
-        return;
+        return true;
       }
     } else {
-      return;
+      return true;
     }
   }
 }

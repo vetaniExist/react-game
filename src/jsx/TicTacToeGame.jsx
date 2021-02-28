@@ -5,6 +5,9 @@ import TicTacToeGameField from "./TicTacToeGameField.jsx";
 import RestartBtn from "./RestartBtn.jsx";
 
 import Setting from "./settings/ticTacToe/Setting.jsx";
+import Popup from "./popup.jsx";
+
+import usePopup from "./hooks/usePopup.jsx";
 
 import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
@@ -24,6 +27,7 @@ function TicTacToeGame(props) {
   const [gameWinner, setGameWinner] = React.useState(ticTacToeInitialStateLoader.loadGameWinner());
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
   const [winLine, setWinLine] = React.useState(ticTacToeInitialStateLoader.loadWinLine());
+  const { isShow, togglePopup } = usePopup(!!gameWinner);
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -96,7 +100,10 @@ function TicTacToeGame(props) {
 
     updateGameField(newGameField);
     changeCurUser();
-    checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
+    const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
+    if (isGameWin) {
+      togglePopup();
+    }
     return CELL_CLICK_RESPONSE_OK;
   }
 
@@ -154,6 +161,12 @@ function TicTacToeGame(props) {
         fieldSize={fieldSize}
         winLineHandler={handleWinLineLength}
         winLineLength={winLineLength} />
+      <Popup
+        gameWinner={gameWinner}
+        isShow={isShow}
+        hide={togglePopup}
+        restart={restartGame}
+      />
     </div>
   );
 }
