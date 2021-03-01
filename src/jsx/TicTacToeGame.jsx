@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TicTacToeGameField from "./TicTacToeGameField.jsx";
 import RestartBtn from "./RestartBtn.jsx";
 
-import Setting from "./settings/ticTacToe/Setting.jsx";
+import Setting from "./settings/Setting.jsx";
 import Popup from "./popup.jsx";
 
 import usePopup from "./hooks/usePopup.jsx";
@@ -12,6 +12,12 @@ import usePopup from "./hooks/usePopup.jsx";
 import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
 import ticTacToeInitialStateLoader from "../js/ticTacToeInitialStateLoader";
+
+import playCircleDrawSound, { playLinesDrawSound } from "../js/audio/AudioPlayer";
+import useVolumeSounds from "./hooks/audio/useVolumeSounds.jsx";
+import useVolumeMusic from "./hooks/audio/useVolumeMusic.jsx";
+import useSounds from "./hooks/audio/useSounds.jsx";
+import useMusic from "./hooks/audio/useMusic.jsx";
 
 import {
   CELL_CLICK_RESPONSE_GAME_END,
@@ -27,7 +33,12 @@ function TicTacToeGame(props) {
   const [gameWinner, setGameWinner] = React.useState(ticTacToeInitialStateLoader.loadGameWinner());
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
   const [winLine, setWinLine] = React.useState(ticTacToeInitialStateLoader.loadWinLine());
+
   const { isShow, togglePopup } = usePopup(!!gameWinner);
+  const { volumeSounds, updateVolumeSounds } = useVolumeSounds();
+  const { volumeMusic, updateVolumeMusic } = useVolumeMusic();
+  const { isSoundsActive, toggleSounds } = useSounds();
+  const { isMusicActive, toggleMusic } = useMusic();
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -92,8 +103,10 @@ function TicTacToeGame(props) {
     let mark;
     if (curUser === 0) {
       mark = "O";
+      playCircleDrawSound(volumeSounds, isSoundsActive);
     } else {
       mark = "X";
+      playLinesDrawSound(volumeSounds, isSoundsActive);
     }
     const newGameField = [...gameField];
     newGameField[id] = mark;
@@ -160,7 +173,20 @@ function TicTacToeGame(props) {
         fieldSizeHandler={handleFieldSize}
         fieldSize={fieldSize}
         winLineHandler={handleWinLineLength}
-        winLineLength={winLineLength} />
+        winLineLength={winLineLength}
+
+        volumeSounds={volumeSounds}
+        updateVolumeSounds={updateVolumeSounds}
+
+        volumeMusic={volumeMusic}
+        updateVolumeMusic={updateVolumeMusic}
+
+        isSoundsActive={isSoundsActive}
+        toggleSounds={toggleSounds}
+
+        isMusicActive={isMusicActive}
+        toggleMusic={toggleMusic}
+      />
       <Popup
         gameWinner={gameWinner}
         isShow={isShow}
