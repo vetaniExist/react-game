@@ -5,11 +5,13 @@ import {
   ERROR_CLICK_ANIMATION_TIME,
   CELL_CLICK_RESPONSE_GAME_END,
   CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
+  CELL_CLICK_RESPONSE_GAME_IN_HISTORY_MODE,
 } from "../js/constants";
 
 function Cell(props) {
   function checkError(event, cellClickCode) {
     switch (cellClickCode) {
+      case CELL_CLICK_RESPONSE_GAME_IN_HISTORY_MODE:
       case CELL_CLICK_RESPONSE_GAME_END: {
         event.target.parentNode.classList.add("error");
         setTimeout(() => {

@@ -19,10 +19,17 @@ import useVolumeMusic from "./hooks/audio/useVolumeMusic.jsx";
 import useSounds from "./hooks/audio/useSounds.jsx";
 import useMusic from "./hooks/audio/useMusic.jsx";
 
+import useStepStack from "./hooks/stepStack/useStepStack.jsx";
+import useStepStackIterator from "./hooks/stepStack/useStepStackIterator.jsx";
+
 import {
   CELL_CLICK_RESPONSE_GAME_END,
   CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
   CELL_CLICK_RESPONSE_OK,
+  CELL_CLICK_RESPONSE_GAME_IN_HISTORY_MODE,
+
+  HISTORY_MODE_UNDO,
+  HISTORY_MODE_REDO,
 } from "../js/constants";
 
 function TicTacToeGame(props) {
@@ -39,6 +46,9 @@ function TicTacToeGame(props) {
   const { volumeMusic, updateVolumeMusic } = useVolumeMusic();
   const { isSoundsActive, toggleSounds } = useSounds();
   const { isMusicActive, toggleMusic } = useMusic();
+
+  const { stepStack, updateStepStack } = useStepStack();
+  const { iter, makeOperation, setIter } = useStepStackIterator(stepStack, gameField, setGameField);
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -82,6 +92,8 @@ function TicTacToeGame(props) {
     updateCurUser(0);
     updateGameWinner("");
     updateWinLine(null);
+    updateStepStack();
+    setIter(0);
   }
 
   function changeCurUser() {
@@ -100,6 +112,10 @@ function TicTacToeGame(props) {
       return CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY;
     }
 
+    if (iter !== stepStack.length) {
+      return CELL_CLICK_RESPONSE_GAME_IN_HISTORY_MODE;
+    }
+
     let mark;
     if (curUser === 0) {
       mark = "O";
@@ -112,6 +128,8 @@ function TicTacToeGame(props) {
     newGameField[id] = mark;
 
     updateGameField(newGameField);
+    updateStepStack(id, mark);
+    setIter(iter + 1);
     changeCurUser();
     const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     if (isGameWin) {
@@ -149,6 +167,9 @@ function TicTacToeGame(props) {
     updateGameWinner("");
     createSetOfField(newSetOfFields);
     updateWinLine(null);
+
+    updateStepStack();
+    setIter(0);
   }
 
   function handleWinLineLength(nWinLineLength) {
@@ -193,6 +214,11 @@ function TicTacToeGame(props) {
         hide={togglePopup}
         restart={restartGame}
       />
+
+      <div>
+        <button onClick={() => makeOperation(HISTORY_MODE_UNDO)}>undo</button>
+        <button onClick={() => makeOperation(HISTORY_MODE_REDO)}>redo</button>
+      </div>
     </div>
   );
 }

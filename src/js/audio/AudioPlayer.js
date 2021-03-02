@@ -1,6 +1,6 @@
 import circleDrawWav from "../../sounds/circle.wav";
 import linesDrawWav from "../../sounds/lines.wav";
-import backgroundSongSrc from "../../sounds/background-music.mp3"
+import backgroundSongSrc from "../../sounds/background-music.mp3";
 
 const circleDrawSound = new Audio(circleDrawWav);
 const linesDrawSound = new Audio(linesDrawWav);
@@ -30,7 +30,7 @@ export function updateBackgroundSongVolume(newVolume) {
   backgroundSong.volume = newVolume;
 }
 
-export function toggleBackgroundMusic(isActive){
+export function toggleBackgroundMusic(isActive) {
   backgroundSong.muted = isActive;
 }
 
