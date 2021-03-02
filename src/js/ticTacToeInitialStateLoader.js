@@ -16,14 +16,6 @@ function loadWinLineLengthInitialState(fieldSize) {
   return localWinLineLength || BASIC_FIELD_SIZE;
 }
 
-function loadGameFieldInitialState(fieldSize) {
-  if (!fieldSize) {
-    throw new Error("ticTacToeInitialStateLoader.loadGameField : can't get gameField");
-  }
-  const localGameField = window.localStorage.getItem("gameField");
-  return (localGameField && localGameField.split(",")) || new Array(fieldSize ** 2).fill("");
-}
-
 function loadCurUserInitialState() {
   return parseInt(window.localStorage.getItem("curUser"), 10) || 0;
 }
@@ -41,7 +33,6 @@ const ticTacToeInitialStateLoader = {};
 
 ticTacToeInitialStateLoader.loadFieldSize = loadFieldSizeInitialState;
 ticTacToeInitialStateLoader.loadWinLineLength = loadWinLineLengthInitialState;
-ticTacToeInitialStateLoader.loadGameField = loadGameFieldInitialState;
 ticTacToeInitialStateLoader.loadCurUser = loadCurUserInitialState;
 ticTacToeInitialStateLoader.loadGameWinner = loadGameWinnerInnitialState;
 ticTacToeInitialStateLoader.loadWinLine = loadWinLineInitialState;

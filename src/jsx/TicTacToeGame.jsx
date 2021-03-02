@@ -13,6 +13,8 @@ import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacTo
 
 import ticTacToeInitialStateLoader from "../js/ticTacToeInitialStateLoader";
 
+import useGameField from "./hooks/ticTacToe/useGameField.jsx";
+
 import playCircleDrawSound, { playLinesDrawSound } from "../js/audio/AudioPlayer";
 import useVolumeSounds from "./hooks/audio/useVolumeSounds.jsx";
 import useVolumeMusic from "./hooks/audio/useVolumeMusic.jsx";
@@ -28,7 +30,8 @@ import {
 function TicTacToeGame(props) {
   const [fieldSize, setFieldSize] = React.useState(ticTacToeInitialStateLoader.loadFieldSize());
   const [winLineLength, setWinLineLength] = React.useState(ticTacToeInitialStateLoader.loadWinLineLength(fieldSize));
-  const [gameField, setGameField] = React.useState(ticTacToeInitialStateLoader.loadGameField(fieldSize));
+  const { gameField, updateGameField } = useGameField(fieldSize);
+
   const [curUser, setCurUser] = React.useState(ticTacToeInitialStateLoader.loadCurUser());
   const [gameWinner, setGameWinner] = React.useState(ticTacToeInitialStateLoader.loadGameWinner());
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
@@ -55,10 +58,6 @@ function TicTacToeGame(props) {
     updateState(newWinLineLength, setWinLineLength, "winLineLength");
   }
 
-  function updateGameField(newGameField) {
-    updateState(newGameField, setGameField, "gameField");
-  }
-
   function updateCurUser(newCurUserVal) {
     updateState(newCurUserVal, setCurUser, "curUser");
   }
@@ -77,8 +76,7 @@ function TicTacToeGame(props) {
   }
 
   function restartGame() {
-    const newGameField = new Array(fieldSize ** 2).fill("");
-    updateGameField(newGameField);
+    updateGameField();
     updateCurUser(0);
     updateGameWinner("");
     updateWinLine(null);
@@ -108,10 +106,8 @@ function TicTacToeGame(props) {
       mark = "X";
       playLinesDrawSound(volumeSounds, isSoundsActive);
     }
-    const newGameField = [...gameField];
-    newGameField[id] = mark;
 
-    updateGameField(newGameField);
+    const newGameField = updateGameField(id, mark);
     changeCurUser();
     const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     if (isGameWin) {
@@ -138,13 +134,12 @@ function TicTacToeGame(props) {
     if (newFieldSize < newWinLineLength) {
       newWinLineLength = newFieldSize;
     }
-    const newGameField = new Array(newFieldSize ** 2).fill("");
+    const newGameField = updateGameField();
     const newSetOfFields = substract2dField(newGameField, newFieldSize, newWinLineLength);
 
     updateFieldSize(newFieldSize);
     updateWinLineLength(newWinLineLength);
 
-    updateGameField(newGameField);
     updateCurUser(0);
     updateGameWinner("");
     createSetOfField(newSetOfFields);
