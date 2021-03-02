@@ -26,22 +26,32 @@ function useGameField(fieldSize) {
 
   const [gameField, setGameField] = useState(loadGameFieldInitialState(fieldSize));
 
-  function restartGameField() {
+  function restartGameField(restore) {
     const newGameField = new Array(fieldSize ** 2).fill("");
     setGameField(newGameField);
-    storeGameFieldInLocalStorage(newGameField);
+    console.log("restore val restart ", restore);
+    if (restore) {
+      console.log("we here");
+      storeGameFieldInLocalStorage(newGameField);
+    }
     return newGameField;
   }
 
-  function updateGameField(index = null, value) {
+  function updateGameField(index = null, value, restore = true) {
     if (index === null) {
-      return restartGameField();
+      return restartGameField(restore);
     }
 
     const newGameField = [...gameField];
     newGameField[index] = value;
     setGameField(newGameField);
-    storeGameFieldInLocalStorage(newGameField);
+    console.log("restore val", restore);
+    if (restore) {
+      console.log("restore");
+      storeGameFieldInLocalStorage(newGameField);
+    }
+    console.log("updateGameField");
+    console.log(gameField);
     return newGameField;
   }
 

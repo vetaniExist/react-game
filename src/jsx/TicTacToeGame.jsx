@@ -26,6 +26,8 @@ import {
   CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY,
   CELL_CLICK_RESPONSE_OK,
 } from "../js/constants";
+import useStepStack from "./hooks/ticTacToe/stepStack/useStepStack.jsx";
+import useStepStackIterator from "./hooks/ticTacToe/stepStack/useStepStackIterator.jsx";
 
 function TicTacToeGame(props) {
   const [fieldSize, setFieldSize] = React.useState(ticTacToeInitialStateLoader.loadFieldSize());
@@ -42,6 +44,9 @@ function TicTacToeGame(props) {
   const { volumeMusic, updateVolumeMusic } = useVolumeMusic();
   const { isSoundsActive, toggleSounds } = useSounds();
   const { isMusicActive, toggleMusic } = useMusic();
+
+  const { stepStack, updateStepStack } = useStepStack();//eslint-disable-line
+  const { iter, makeOperation, setIter } = useStepStackIterator(stepStack, updateGameField);
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -80,6 +85,8 @@ function TicTacToeGame(props) {
     updateCurUser(0);
     updateGameWinner("");
     updateWinLine(null);
+    updateStepStack();
+    setIter(0);
   }
 
   function changeCurUser() {
@@ -98,6 +105,13 @@ function TicTacToeGame(props) {
       return CELL_CLICK_RESPONSE_FIELD_NOT_EMPTY;
     }
 
+    if (iter !== stepStack.length) {
+      console.log(iter);
+      console.log(stepStack);
+      console.log("its redo/undo regim");
+      return;
+    }
+
     let mark;
     if (curUser === 0) {
       mark = "O";
@@ -109,6 +123,8 @@ function TicTacToeGame(props) {
 
     const newGameField = updateGameField(id, mark);
     changeCurUser();
+    updateStepStack(id, mark);
+    setIter(iter + 1);
     const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     if (isGameWin) {
       togglePopup();
@@ -144,6 +160,8 @@ function TicTacToeGame(props) {
     updateGameWinner("");
     createSetOfField(newSetOfFields);
     updateWinLine(null);
+    updateStepStack();
+    setIter(0);
   }
 
   function handleWinLineLength(nWinLineLength) {
@@ -188,6 +206,10 @@ function TicTacToeGame(props) {
         hide={togglePopup}
         restart={restartGame}
       />
+      <div>
+        <button onClick={() => makeOperation("undo")}>undo</button>
+        <button onClick={() => makeOperation("redo")}>redo</button>
+      </div>
     </div>
   );
 }
