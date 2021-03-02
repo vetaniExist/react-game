@@ -119,24 +119,25 @@ function findArrayOfFieldsThatIntoClickArea(setOfFields, clickID) {
 
 export default function checkWinCondition(gameField, setGameWinner, setOfFields, clickID, setWinLine) {
   if (clickID === -1) {
-    return;
+    return false;
   }
   const arrayOfFields = findArrayOfFieldsThatIntoClickArea(setOfFields, clickID);
   for (let i = 0; i < arrayOfFields.length; i += 1) {
     const field2D = configurateField2DUsingArrayOfID(arrayOfFields[i], gameField);
-    if (!checkHorizontals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
-      if (!checkVerticals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
-        if (checkDiagonals(field2D, setGameWinner, arrayOfFields[i], setWinLine)) {
-          return true;
-        }
-        return false;
-      } else {
-        return true;
-      }
-    } else {
+    const isHorizontals = checkHorizontals(field2D, setGameWinner, arrayOfFields[i], setWinLine);
+    if (isHorizontals) {
+      return true;
+    }
+    const isVertiacals = checkVerticals(field2D, setGameWinner, arrayOfFields[i], setWinLine);
+    if (isVertiacals) {
+      return true;
+    }
+    const isDiagonals = checkDiagonals(field2D, setGameWinner, arrayOfFields[i], setWinLine);
+    if (isDiagonals) {
       return true;
     }
   }
+  return false;
 }
 
 export function isStalemate(field) {
