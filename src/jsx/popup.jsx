@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import {
+  DEFAULT_LANGUAGE,
+  ENGLISH_LANGUAGE,
+  RUSSIAN_LANGUAGE,
+} from "../js/constants";
+
 const overlay = document.getElementById("overlay");
 
 function Popup(props) {
@@ -22,14 +28,41 @@ function Popup(props) {
     props.hide();
   }
 
+  function configurateWinMessage() {
+    if (props.gameWinner) {
+      switch (props.curLang) {
+        case ENGLISH_LANGUAGE: {
+          return `Game winner is ${props.gameWinner}.`;
+        }
+        case RUSSIAN_LANGUAGE: {
+          return `Победитель: ${props.gameWinner}`;
+        }
+        default: {
+          break;
+        }
+      }
+    }
+    switch (props.curLang) {
+      case ENGLISH_LANGUAGE: {
+        return "Stalemate";
+      }
+      case RUSSIAN_LANGUAGE: {
+        return "Ничья";
+      }
+      default: {
+        break;
+      }
+    }
+    return "";
+  }
+
   return (
     <div className="popup" style={configurateStyle()}>
-      Game winner is { props.gameWinner}.
+      {configurateWinMessage()}
       <div>
         <button onClick={() => props.hide()}>Close</button>
         <button onClick={() => restart()}>Restart</button>
       </div>
-
     </div>
   );
 }
@@ -39,6 +72,11 @@ Popup.propTypes = {
   isShow: PropTypes.bool.isRequired,
   hide: PropTypes.func.isRequired,
   restart: PropTypes.func.isRequired,
+  curLang: PropTypes.string,
+};
+
+Popup.defaultProps = {
+  curLang: DEFAULT_LANGUAGE,
 };
 
 export default Popup;

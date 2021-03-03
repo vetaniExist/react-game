@@ -44,7 +44,7 @@ function TicTacToeGame(props) {
   const [setOfFields, createSetOfField] = React.useState(substract2dField(gameField, fieldSize, winLineLength));
   const [winLine, setWinLine] = React.useState(ticTacToeInitialStateLoader.loadWinLine());
 
-  const { isShow, togglePopup } = usePopup(!!gameWinner);
+  const { isShow, togglePopup } = usePopup(!!(gameWinner || isStalemate(gameField)));
   const { volumeSounds, updateVolumeSounds } = useVolumeSounds();
   const { volumeMusic, updateVolumeMusic } = useVolumeMusic();
   const { isSoundsActive, toggleSounds } = useSounds();
@@ -138,17 +138,11 @@ function TicTacToeGame(props) {
     const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     if (isGameWin) {
       togglePopup();
+    } else if (isStalemate(newGameField)) {
+      togglePopup();
     }
     return CELL_CLICK_RESPONSE_OK;
   }
-
-  React.useEffect(() => {
-    if (!gameWinner) {
-      if (isStalemate(gameField)) {
-        titTacToeLocale.stalemate(curLang);
-      }
-    }
-  });
 
   function cellClickHandleOnline() {
     throw new Error("cellClickHandleOnline not implement");
@@ -221,6 +215,7 @@ function TicTacToeGame(props) {
         isShow={isShow}
         hide={togglePopup}
         restart={restartGame}
+        curLang={curLang}
       />
 
       <div>

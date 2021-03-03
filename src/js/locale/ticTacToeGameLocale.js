@@ -3,22 +3,6 @@ import {
   RUSSIAN_LANGUAGE,
 } from "../constants";
 
-function printStalemateMessage(lang) {
-  switch (lang) {
-    case ENGLISH_LANGUAGE: {
-      console.log("stalemate in tic tac toe");
-      break;
-    }
-    case RUSSIAN_LANGUAGE: {
-      console.log("ничья");
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-}
-
 function printUndo(lang) {
   switch (lang) {
     case ENGLISH_LANGUAGE: {
@@ -48,7 +32,6 @@ function printRedo(lang) {
 }
 
 const titTacToeLocale = {};
-titTacToeLocale.stalemate = printStalemateMessage;
 titTacToeLocale.undo = printUndo;
 titTacToeLocale.redo = printRedo;
 

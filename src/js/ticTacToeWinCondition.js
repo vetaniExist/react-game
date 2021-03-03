@@ -141,5 +141,5 @@ export default function checkWinCondition(gameField, setGameWinner, setOfFields,
 }
 
 export function isStalemate(field) {
-  return field.filter((el) => el === "").length === 0;
+  return field.every((el) => el !== "");
 }
