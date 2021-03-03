@@ -9,7 +9,7 @@ function printUndo(lang) {
       return "undo";
     }
     case RUSSIAN_LANGUAGE: {
-      return "назад"
+      return "назад";
     }
     default: {
       return "";
@@ -23,7 +23,21 @@ function printRedo(lang) {
       return "redo";
     }
     case RUSSIAN_LANGUAGE: {
-      return "вперед"
+      return "вперед";
+    }
+    default: {
+      return "";
+    }
+  }
+}
+
+function printShowRecordsTable(lang) {
+  switch (lang) {
+    case ENGLISH_LANGUAGE: {
+      return "show records table";
+    }
+    case RUSSIAN_LANGUAGE: {
+      return "показать таблицу рекордов";
     }
     default: {
       return "";
@@ -34,5 +48,6 @@ function printRedo(lang) {
 const titTacToeLocale = {};
 titTacToeLocale.undo = printUndo;
 titTacToeLocale.redo = printRedo;
+titTacToeLocale.showRecordsTable = printShowRecordsTable;
 
 export default titTacToeLocale;

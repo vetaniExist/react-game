@@ -55,3 +55,16 @@
     color: red;
     z-index: 6;
 }
+
+.records-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    color: red;
+    display: flex;
+    flex-direction: column-reverse;
+    min-height: 20vh;
+    min-width: 20vw;
+}

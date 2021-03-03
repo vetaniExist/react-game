@@ -1,7 +1,3 @@
-function logWinner(winnerFieldMark) {
-  console.log("find game winner. Winner is ", winnerFieldMark);
-}
-
 function configurateField2D(fieldSize, gameField) {
   const field2D = new Array(fieldSize);
   let f = 0;
@@ -53,7 +49,6 @@ export function substract2dField(gameField, fieldSize, subFieldsSize = 3) {
 function checkHorizontals(field2D, setGameWinner, idField, setWinLine) {
   for (let i = 0; i < field2D.length; i += 1) {
     if (field2D[i][0] !== "" && field2D[i].every((el) => el === field2D[i][0])) {
-      logWinner(field2D[i][0]);
       setGameWinner(field2D[i][0]);
       setWinLine(idField[i]);
       return field2D[i][0];
@@ -65,7 +60,6 @@ function checkHorizontals(field2D, setGameWinner, idField, setWinLine) {
 function checkVerticals(field2D, setGameWinner, idField, setWinLine) {
   for (let i = 0; i < field2D[0].length; i += 1) {
     if (field2D[0][i] !== "" && field2D.every((el) => el[i] === field2D[0][i])) {
-      logWinner(field2D[0][i]);
       setGameWinner(field2D[0][i]);
 
       const winLine = idField.reduce((acc, row) => [...acc, row[i]], []);
@@ -80,7 +74,6 @@ function checkVerticals(field2D, setGameWinner, idField, setWinLine) {
 function checkDiagonals(field2D, setGameWinner, idField, setWinLine) {
   const leftToRightDiagonal = field2D[0][0] !== "" && field2D.every((el, idx) => el[idx] === field2D[0][0]);
   if (leftToRightDiagonal) {
-    logWinner(field2D[0][0]);
     setGameWinner(field2D[0][0]);
 
     const winLine = idField.reduce((acc, row, idx) => [...acc, row[idx]], []);
@@ -94,7 +87,6 @@ function checkDiagonals(field2D, setGameWinner, idField, setWinLine) {
     && field2D.every((el, idx) => el[lastCellIndex - idx] === field2D[0][lastCellIndex]);
 
   if (rightToLeftDiagonal) {
-    logWinner(field2D[0][lastCellIndex]);
     setGameWinner(field2D[0][lastCellIndex]);
 
     const winLine = idField.reduce((acc, row, idx) => [...acc, row[lastCellIndex - idx]], []);

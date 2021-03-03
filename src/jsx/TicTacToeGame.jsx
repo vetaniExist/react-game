@@ -6,6 +6,7 @@ import RestartBtn from "./RestartBtn.jsx";
 
 import Setting from "./settings/Setting.jsx";
 import Popup from "./popup.jsx";
+import RecordsTable from "./RecordsTable.jsx";
 
 import usePopup from "./hooks/usePopup.jsx";
 import useLanguage from "./hooks/useLanguage.jsx";
@@ -22,6 +23,9 @@ import useMusic from "./hooks/audio/useMusic.jsx";
 
 import useStepStack from "./hooks/stepStack/useStepStack.jsx";
 import useStepStackIterator from "./hooks/stepStack/useStepStackIterator.jsx";
+
+import useRecords from "./hooks/useRecords.jsx";
+import useRecordsTable from "./hooks/useRecordsTable.jsx";
 
 import titTacToeLocale from "../js/locale/ticTacToeGameLocale";
 
@@ -53,6 +57,9 @@ function TicTacToeGame(props) {
   const { stepStack, updateStepStack } = useStepStack();
   const { iter, makeOperation, setIter } = useStepStackIterator(stepStack, gameField, setGameField);
   const { curLang, updateLanguage } = useLanguage();
+
+  const { records, updateRecords } = useRecords();
+  const { isShowRecordsTable, toggleRecordsTable } = useRecordsTable();
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -137,8 +144,10 @@ function TicTacToeGame(props) {
     changeCurUser();
     const isGameWin = checkWinCondition(newGameField, updateGameWinner, setOfFields, id, updateWinLine);
     if (isGameWin) {
+      updateRecords(mark);
       togglePopup();
     } else if (isStalemate(newGameField)) {
+      updateRecords("");
       togglePopup();
     }
     return CELL_CLICK_RESPONSE_OK;
@@ -222,6 +231,15 @@ function TicTacToeGame(props) {
         <button onClick={() => makeOperation(HISTORY_MODE_UNDO)}>{titTacToeLocale.undo(curLang)}</button>
         <button onClick={() => makeOperation(HISTORY_MODE_REDO)}>{titTacToeLocale.redo(curLang)}</button>
       </div>
+
+      <button onClick={() => toggleRecordsTable()}>
+        {titTacToeLocale.showRecordsTable(curLang)}
+      </button>
+      <RecordsTable
+        records={records}
+        isShow={isShowRecordsTable}
+        hide={toggleRecordsTable}
+        curLang={curLang} />
     </div>
   );
 }

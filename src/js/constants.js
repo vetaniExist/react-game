@@ -20,3 +20,5 @@ export const HISTORY_MODE_REDO = "redo";
 export const DEFAULT_LANGUAGE = "en";
 export const ENGLISH_LANGUAGE = "en";
 export const RUSSIAN_LANGUAGE = "ru";
+
+export const RECORS_TABLE_MAX_LENGTH = 10;
