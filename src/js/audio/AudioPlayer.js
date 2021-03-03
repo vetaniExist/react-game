@@ -1,5 +1,5 @@
-import circleDrawWav from "../../sounds/circle.wav";
-import linesDrawWav from "../../sounds/lines.wav";
+import circleDrawWav from "../../sounds/circle.mp3";
+import linesDrawWav from "../../sounds/lines.mp3";
 import backgroundSongSrc from "../../sounds/background-music.mp3";
 
 const circleDrawSound = new Audio(circleDrawWav);

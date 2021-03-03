@@ -11,7 +11,8 @@
     "startWeb": "start http://localhost:3000 && node ./dist/server.js",
     "lint": "eslint ./**/*.js",
     "lintf": "eslint --fix ./**/*.js",
-    "lintp": "eslint"
+    "lintp": "eslint",
+    "heroku-postbuild": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js"
   },
   "keywords": [],
   "author": "",
@@ -47,5 +48,8 @@
     "webpack-cli": "^4.5.0",
     "webpack-dev-middleware": "^4.1.0",
     "webpack-node-externals": "^2.5.2"
+  },
+  "engines": {
+    "node": "12.17.0"
   }
 }
