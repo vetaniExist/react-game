@@ -16,3 +16,7 @@ export const LOCAL_STORAGE_APP_SIGNATURE = "vetaniExistTTT_";
 
 export const HISTORY_MODE_UNDO = "undo";
 export const HISTORY_MODE_REDO = "redo";
+
+export const DEFAULT_LANGUAGE = "en";
+export const ENGLISH_LANGUAGE = "en";
+export const RUSSIAN_LANGUAGE = "ru";

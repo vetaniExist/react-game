@@ -3,19 +3,22 @@ import PropTypes from "prop-types";
 
 import FieldSize from "./ticTacToe/FieldSize.jsx";
 import WinLineLength from "./ticTacToe/WinLineLength.jsx";
-import AudioSetting from "./AudioSetting.jsx";
+import AudioSetting from "./audio/AudioSetting.jsx";
+import LanguageSettings from "./LanguageSettings.jsx";
 
 function Setting(props) {
   return (
     <div>
       <FieldSize
         fieldSizeHandler={props.fieldSizeHandler}
-        fieldSizeValue={props.fieldSize} />
+        fieldSizeValue={props.fieldSize}
+        curLang={props.curLang} />
       <br />
       <WinLineLength
         winLineHandler={props.winLineHandler}
         winLineLength={props.winLineLength}
-        fieldSizeValue={props.fieldSize} />
+        fieldSizeValue={props.fieldSize}
+        curLang={props.curLang} />
       <AudioSetting
         updateVolumeSounds={props.updateVolumeSounds}
         volumeSounds={props.volumeSounds}
@@ -28,7 +31,12 @@ function Setting(props) {
 
         isMusicActive={props.isMusicActive}
         toggleMusic={props.toggleMusic}
-        />
+
+        curLang={props.curLang}
+      />
+      <LanguageSettings
+        curLang={props.curLang}
+        updateLanguage={props.updateLanguage} />
     </div>);
 }
 
@@ -50,6 +58,9 @@ Setting.propTypes = {
 
   isMusicActive: PropTypes.bool.isRequired,
   toggleMusic: PropTypes.func.isRequired,
+
+  curLang: PropTypes.string.isRequired,
+  updateLanguage: PropTypes.func.isRequired,
 };
 
 export default Setting;

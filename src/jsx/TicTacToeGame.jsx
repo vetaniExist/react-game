@@ -8,6 +8,7 @@ import Setting from "./settings/Setting.jsx";
 import Popup from "./popup.jsx";
 
 import usePopup from "./hooks/usePopup.jsx";
+import useLanguage from "./hooks/useLanguage.jsx";
 
 import checkWinCondition, { substract2dField, isStalemate } from "../js/ticTacToeWinCondition";
 
@@ -21,6 +22,8 @@ import useMusic from "./hooks/audio/useMusic.jsx";
 
 import useStepStack from "./hooks/stepStack/useStepStack.jsx";
 import useStepStackIterator from "./hooks/stepStack/useStepStackIterator.jsx";
+
+import titTacToeLocale from "../js/locale/ticTacToeGameLocale";
 
 import {
   CELL_CLICK_RESPONSE_GAME_END,
@@ -49,6 +52,7 @@ function TicTacToeGame(props) {
 
   const { stepStack, updateStepStack } = useStepStack();
   const { iter, makeOperation, setIter } = useStepStackIterator(stepStack, gameField, setGameField);
+  const { curLang, updateLanguage } = useLanguage();
 
   function updateState(newValue, setStateCallback, localStorageVarName) {
     setStateCallback(newValue);
@@ -141,7 +145,7 @@ function TicTacToeGame(props) {
   React.useEffect(() => {
     if (!gameWinner) {
       if (isStalemate(gameField)) {
-        console.log("stalemate in tic tac toe");
+        titTacToeLocale.stalemate(curLang);
       }
     }
   });
@@ -189,7 +193,8 @@ function TicTacToeGame(props) {
         winLine={winLine}
       />
       <RestartBtn
-        clickHandler={restartGame} />
+        clickHandler={restartGame}
+        curLang={curLang} />
       <Setting
         fieldSizeHandler={handleFieldSize}
         fieldSize={fieldSize}
@@ -207,6 +212,9 @@ function TicTacToeGame(props) {
 
         isMusicActive={isMusicActive}
         toggleMusic={toggleMusic}
+
+        curLang={curLang}
+        updateLanguage={updateLanguage}
       />
       <Popup
         gameWinner={gameWinner}
@@ -216,8 +224,8 @@ function TicTacToeGame(props) {
       />
 
       <div>
-        <button onClick={() => makeOperation(HISTORY_MODE_UNDO)}>undo</button>
-        <button onClick={() => makeOperation(HISTORY_MODE_REDO)}>redo</button>
+        <button onClick={() => makeOperation(HISTORY_MODE_UNDO)}>{titTacToeLocale.undo(curLang)}</button>
+        <button onClick={() => makeOperation(HISTORY_MODE_REDO)}>{titTacToeLocale.redo(curLang)}</button>
       </div>
     </div>
   );

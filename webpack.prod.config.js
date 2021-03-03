@@ -48,6 +48,7 @@ module.exports = {
       },
       {
         // Loads images into CSS and Javascript files
+        // url-loader dont work with wav format?
         test: /\.(png|svg|jpg|gif|mp3|wav)$/,
         use: [{ loader: "url-loader" }]
       },
